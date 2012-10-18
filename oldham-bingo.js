@@ -8,17 +8,28 @@ if (Meteor.isClient) {
   Template.signin.events({
     'blur #signin_username': function(e) {
       var username = e.target.value;
-      var userid = Players.insert({ username: username, started: new Date(), num_squares: 1, acquired_squares: [] });
+      var userid = Players.insert({ username: username, started: new Date(), acquired_squares: [] });
       Session.set("username", username);
       Session.set("userid", userid);
     },
   });
   Template.scoreboard.players = function() {
-    return Players.find({ 'started': { $gt : (new Date()) - (24 * 60 * 60 * 1000) }});
+    return Players.find({
+      'started': { $gt : (new Date()) - (24 * 60 * 60 * 1000) }
+    }).map(function(p) {
+      p.num_squares = p.acquired_squares.length;
+      return p;
+    });
   };
 
   Template.board.rows = function() {
-    var s = Squares.find({}).fetch();
+    if (Session.get('board') === undefined) {
+      // Collect 24 random squares and mix them up. Store them in session for
+      // now.
+      Session.set('board', shuffle(Squares.find({}).fetch()).slice(0,25));
+      console.log(Session.get('board'));
+    }
+    var s = Session.get('board');
     var board = [];
     var rows = 5, cols = 5, free_space_index = 12;
     var acquired_squares = Players.find({ _id: Session.get("userid") }).fetch()[0].acquired_squares;
@@ -33,19 +44,27 @@ if (Meteor.isClient) {
         } else {
           this_row.push({text: "FREE", acquired: true, id: 'free'});
         }
-      } 
+      }
       board.push({ cols: this_row });
     }
 
     return board;
   };
 
-  Template.board.events({ 
+  Template.board.events({
     'click td' : function(e) {
-      Players.update({ _id: Session.get("userid") }, { 
-        $inc: { num_squares: 1 }, 
-        $push: { acquired_squares: e.target.id }
-      });
+      var square_id = e.target.id;
+      var acquired_squares = Players.find({ _id: Session.get("userid") }).fetch()[0].acquired_squares;
+      // todo: verify that the square is not already acquired
+      if (acquired_squares.indexOf(square_id) == -1) {
+        Players.update({ _id: Session.get("userid") }, {
+          $addToSet: { acquired_squares: square_id },
+        });
+      } else {
+        Players.update({ _id: Session.get("userid") }, {
+          $pull: { acquired_squares: square_id },
+        });
+      }
     },
   });
 }
@@ -79,3 +98,10 @@ if (Meteor.isServer) {
     }
   });
 }
+//+ Jonas Raoni Soares Silva
+//@ http://jsfromhell.com/array/shuffle [v1.0]
+
+shuffle = function(o){ //v1.0
+    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};
