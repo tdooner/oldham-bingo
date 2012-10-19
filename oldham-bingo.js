@@ -1,3 +1,6 @@
+var BOARD_ROWS = 5,
+    BOARD_COLS = 5,
+    FREE_SPACE_INDEX = 12;
 var Players = new Meteor.Collection("players");
 var Squares = new Meteor.Collection("squares");
 
@@ -11,6 +14,12 @@ if (Meteor.isClient) {
       var userid = Players.insert({ username: username, started: new Date(), acquired_squares: [] });
       Session.set("username", username);
       Session.set("userid", userid);
+
+      // Collect 24 random squares and mix them up. Store them in session for
+      // now.
+      if (Session.get('board') === undefined) {
+        Session.set('board', shuffle(Squares.find({}).fetch()).slice(0,25));
+      }
     },
   });
   Template.scoreboard.players = function() {
@@ -23,21 +32,14 @@ if (Meteor.isClient) {
   };
 
   Template.board.rows = function() {
-    if (Session.get('board') === undefined) {
-      // Collect 24 random squares and mix them up. Store them in session for
-      // now.
-      Session.set('board', shuffle(Squares.find({}).fetch()).slice(0,25));
-      console.log(Session.get('board'));
-    }
     var s = Session.get('board');
     var board = [];
-    var rows = 5, cols = 5, free_space_index = 12;
     var acquired_squares = Players.find({ _id: Session.get("userid") }).fetch()[0].acquired_squares;
-    for (var i = 0; i < rows; i++) {
+    for (var i = 0; i < BOARD_ROWS; i++) {
       var this_row = [];
-      for (var j = 0; j < cols; j++) {
-        if (i * rows + j != free_space_index) {
-          var square = s[i * rows + j];
+      for (var j = 0; j < BOARD_COLS; j++) {
+        if (i * BOARD_ROWS + j != FREE_SPACE_INDEX) {
+          var square = s[i * BOARD_ROWS + j];
           if (square) {
             this_row.push({text: square.text, acquired: acquired_squares.indexOf(square._id) != -1, id: square._id});
           }
@@ -65,6 +67,13 @@ if (Meteor.isClient) {
           $pull: { acquired_squares: square_id },
         });
       }
+
+      var acquired_squares = Players.find({ _id: Session.get("userid") }).fetch()[0].acquired_squares;
+      // Prepare for the Is-it-bingo? check
+      var acquisitions = Session.get('board').map(function(e) {
+        return (acquired_squares.indexOf(e._id) != -1);
+      });
+      console.log(has_bingo(acquisitions, FREE_SPACE_INDEX));
     },
   });
 }
@@ -72,25 +81,38 @@ if (Meteor.isClient) {
 if (Meteor.isServer) {
   Meteor.startup(function () {
     var board = [
-      { text:"Curly Brackets", },
-      { text:"Abstraction", },
-      { text:"Convert to Java", },
-      { text:"How Compilers Work", },
-      { text:"I don't draw flow charts, I use them", },
-      { text:"Boo-lee-an", },
-      { text:"32-bit", },
-      { text:"When I was at Rockwell Automation",  },
-      { text:"NASA", },
-      { text:"In C...", },
-      { text:"PLC", },
-      { text:"Memory Register", },
-      { text:"3.1415926535... I don't know the rest, but...", },
-      { text:"Jibberish... and that's how that works", },
-      { text:"Asks question to class - recieves no answer", },
-      { text:"Java is like C++", },
-      { text:"Reference to program on space shuttle",  },
-      { text:"When your boss asks you to...", },
-      { text:"Hexadecimal" },
+      { text: "Curly Brackets", },
+      { text: "Abstraction", },
+      { text: "Convert to Java", },
+      { text: "How Compilers Work", },
+      { text: "Boo-lee-an", },
+      { text: "Girlfriend", },
+      { text: "Talking about old technology", },
+      { text: "Impressed by newfangled technology", },
+      { text: "32-bit", },
+      { text: "Rockwell Automation",  },
+      { text: "NASA", },
+      { text: "Navy/Submarine", },
+      { text: "Space Shuttle",  },
+      { text: "In C...", },
+      { text: "PIC Architecture", },
+      { text: "Memory Register", },
+      { text: "[jibberish]... and that's how that works", },
+      { text: "Asks question to class - recieves no answer", },
+      { text: "When your boss asks you to...", },
+      { text: "A random story", },
+      { text: "Sem-uh-colon" },
+      { text: "Cats" },
+      { text: "The Compiler Diagram" },
+      { text: "Abstraction" },
+      { text: "This usually is on the test" },
+      { text: "The Oldham laugh" },
+      { text: "This is how you do the homework" },
+      { text: "Extra Credit" },
+      { text: "EECS 281" },
+      { text: "Running out of time" },
+      { text: "Fills board with unreadable handwriting" },
+      { text: "Student calls out a mistake" },
     ];
     Squares.remove({});
     for (i in board) {
@@ -105,3 +127,49 @@ shuffle = function(o){ //v1.0
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
 };
+
+has_bingo = function(acquired, free_space_index) {
+  // Acquired is a flattened array of [ true, true, false, ..., false ]
+  acquired[free_space_index] = true;
+
+  // Up-down bingo
+  for (var i = 0; i < BOARD_COLS; i++) { // column
+    var has_bingo = true;
+    for (var j = 0; j < BOARD_ROWS; j++) { // row
+      has_bingo = has_bingo && acquired[i + BOARD_COLS * j];
+    }
+    if (has_bingo) {
+      return true;
+    }
+  }
+
+  // Left-right bingo
+  for (var i = 0; i < BOARD_ROWS; i++) { // row
+    var has_bingo = true;
+    for (var j = 0; j < BOARD_COLS; j++) { // col
+      has_bingo = has_bingo && acquired[i * BOARD_COLS + j];
+    }
+    if (has_bingo) {
+      return true;
+    }
+  }
+
+  // Diagonal Bingo
+  // TopLeft-BottomRight
+  var has_bingo = true;
+  for (var i = 0; i < (BOARD_ROWS * BOARD_COLS); i += (BOARD_COLS + 1)) {
+    has_bingo = has_bingo && acquired[i];
+  }
+  if (has_bingo) {
+    return true;
+  }
+  // TopRight-BottomLeft
+  var has_bingo = true;
+  for (var i = (BOARD_ROWS - 1); i < (1 + BOARD_COLS * (BOARD_ROWS - 1)); i += (BOARD_COLS - 1)) {
+    has_bingo = has_bingo && acquired[i];
+  }
+  if (has_bingo) {
+    return true;
+  }
+  return false;
+}
