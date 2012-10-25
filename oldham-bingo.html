@@ -10,7 +10,14 @@
   {{#if signed_in}}
     {{> signin}}
   {{else}}
-    {{> board}}
+    <div id="bingo-board-container">
+    {{#if winner}}
+      {{winner.username}} has won!
+      New Game?
+    {{else}}
+      {{> board}}
+    {{/if}}
+    </div>
   {{/if}}
 
   {{> scoreboard}}
@@ -25,6 +32,8 @@
     </ul>
   </div>
 </template>
+<template name="winner">
+</template>
 <template name="signin">
   <div id="signin-container">
     <form id="signin_form">
@@ -34,15 +43,13 @@
   </div>
 </template>
 <template name="board">
-  <div id="bingo-board-container">
-    <table id="bingo-board">
-      {{#each rows}}
-        <tr>
-        {{#each cols}}
-          <td id="{{id}}" {{#if acquired}} class="acquired" {{/if}}>{{text}}</td>
-        {{/each}}
-        </tr>
+  <table id="bingo-board">
+    {{#each rows}}
+      <tr>
+      {{#each cols}}
+        <td id="{{id}}" {{#if acquired}} class="acquired" {{/if}}>{{text}}</td>
       {{/each}}
-    </table>
-  </div>
+      </tr>
+    {{/each}}
+  </table>
 </template>
