@@ -7,16 +7,15 @@
   {{> homepage }}
 </body>
 <template name="homepage">
-  {{#if signed_in}}
+  {{#if not_signed_in}}
     {{> signin}}
   {{else}}
-    <div id="bingo-board-container">
     {{#if winner}}
       {{winner.username}} has won!
-      New Game?
-    {{else}}
-      {{> board}}
-    {{/if}}
+      Refresh for a new game.
+		{{/if}}
+    <div id="bingo-board-container">
+    {{> board}}
     </div>
   {{/if}}
 
