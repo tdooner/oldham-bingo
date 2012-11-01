@@ -132,8 +132,13 @@ if (Meteor.isClient) {
       // Check for Bingo, update player accordingly.
       if (bingo_count(acquisitions, FREE_SPACE_INDEX)===5) {
         Players.update({ _id: Session.get("userid") }, {$set: {victory: true}});
-        Games.update({_id: Session.get("gameid") }, {$set: {active: false}});
-        Games.insert({ started: new Date(), active: true })
+				Games.update({_id: Session.get("gameid") }, {$set: {active: false}});
+    		Games.insert({ started: new Date(), active: true });
+        if ((new Audio()).canPlayType("audio/ogg")) {
+          (new Audio('bingo.ogg')).play();
+        } else {
+          (new Audio('bingo.mp3')).play();
+        }
       }
     },
   });
