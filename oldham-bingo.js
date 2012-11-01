@@ -191,7 +191,7 @@ shuffle = function(o){ //v1.0
 
 bingo_count = function(acquired, free_space_index) {
   // Acquired is a flattened array of [ true, true, false, ..., false ]
-  acquired[free_space_index] = true; 
+  acquired[free_space_index] = true;
   long_bingo = 0;
   // Up-down bingo
   for (var i = 0; i < BOARD_COLS; i++) { // column
