@@ -157,7 +157,7 @@ if (Meteor.isServer) {
       { text: "All four boards have code on them",  },
       { text: "In C...", },
       { text: "PIC Architecture", },
-      { text: "Memory Register", },
+      { text: "Memory Register / Hunks of Memory", },
       { text: "[jibberish]... and that's how that works", },
       { text: "Asks question to class - recieves no answer", },
       { text: "When your boss asks you to...", },
@@ -175,6 +175,12 @@ if (Meteor.isServer) {
       { text: "Fills board with unreadable handwriting" },
       { text: "Student calls out a mistake" },
       { text: "Fails at his own problems." },
+      { text: "Says 'code' more than three times in one sentence." },
+      { text: "C S H F S" },
+      { text: "Erases something just after explaining it" },
+      { text: "Not that realistic real-world tie-in to what he's teaching" },
+      { text: "Talks about code he has written in the distant past" },
+      { text: "Global Variables" },
     ];
     Squares.remove({});
     for (i in board) {
