@@ -6,8 +6,8 @@
   {{> homepage }}
 </body>
 <template name="homepage">
+  <h1>Let's Play Some Bingo!</h1>
   {{#if not_signed_in}}
-    <h1>Play Bingo!</h1>
     {{> signin}}
   {{else}}
     <div id="bingo-board-container">
