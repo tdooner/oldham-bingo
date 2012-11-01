@@ -54,7 +54,7 @@ h1 {
   list-style: none;
 }
 #scoreboard-container li {
-  height: 30px;
+  padding: 1px;
 }
 #scoreboard-container.the_user li {
   background-color: #efefef;
