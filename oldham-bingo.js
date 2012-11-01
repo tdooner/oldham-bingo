@@ -4,6 +4,7 @@ var BOARD_ROWS = 5,
 var Players = new Meteor.Collection("players");
 var Squares = new Meteor.Collection("squares");
 var Games = new Meteor.Collection("games");
+var Chats = new Meteor.Collection("chats");
 
 if (Meteor.isClient) {
   Template.homepage.not_signed_in = function () {
@@ -17,7 +18,7 @@ if (Meteor.isClient) {
   Template.signin.events({
     'blur #signin_username, click #signin_button': function(e) {
       var current_game = Games.findOne({ active: true })
-      var username = e.target.value;
+      var username = $(e.target).siblings('#signin_username').val();
       var userid = Players.insert({
         username: username,
         acquired_squares: [],
@@ -33,6 +34,7 @@ if (Meteor.isClient) {
       if (Session.get('board') === undefined) {
         Session.set('board', shuffle(Squares.find({}).fetch()).slice(0,25));
       }
+      return false;
     },
   });
 
@@ -44,6 +46,22 @@ if (Meteor.isClient) {
       return p;
     });
   };
+
+  Template.chat.messages = function() {
+    var messages = Chats.find({}, { sort: { timestamp: 1 }}).fetch();
+    return messages.slice(messages.length - 10, messages.length);
+  };
+
+  Template.chat.events({
+    'click #chat_message_submit': function(e) {
+      var $message_holder = $(e.target).siblings('#chat_message');
+      message_contents = $message_holder.val();
+      $message_holder.val('');
+      if (message_contents.length == 0) { return; }
+      Chats.insert({ msg: message_contents, timestamp: new Date(), user: Session.get('username') });
+      return false;
+    },
+  });
 
   Template.board.rows = function() {
     var s = Session.get('board');
