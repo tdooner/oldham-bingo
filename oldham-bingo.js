@@ -65,7 +65,7 @@ if (Meteor.isClient) {
 
   Template.chat.messages = function() {
     var messages = Chats.find({}, { sort: { timestamp: 1 }}).fetch();
-    return messages.slice(messages.length - 10, messages.length);
+    return messages.slice(messages.length - 10, messages.length).reverse();
   };
 
   Template.chat.events({

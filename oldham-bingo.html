@@ -18,8 +18,8 @@
         {{winner.username}} has won!
         <div id="new-game-button">Play Again?</div>
       {{/if}}
-      {{> scoreboard}}
       {{> chat}}
+      {{> scoreboard}}
     </div>
   {{/if}}
 </template>
@@ -36,15 +36,15 @@
 <template name="chat">
   <div id="scoreboard-container">
     <h2>Chat:</h2>
+    <form action='#'>
+      <input type='text' id='chat_message' />
+      <input type='submit' value='>' id='chat_message_submit'/>
+    </form>
     <ul>
     {{#each messages}}
     <li><b>{{this.user}}</b>: {{this.msg}}</li>
     {{/each}}
     </ul>
-    <form action='#'>
-      <input type='text' id='chat_message' />
-      <input type='submit' value='>' id='chat_message_submit'/>
-    </form>
   </div>
 </template>
 <template name="winner">
