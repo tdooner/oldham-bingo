@@ -7,20 +7,20 @@
   {{> homepage }}
 </body>
 <template name="homepage">
-  {{#if signed_in}}
+  {{#if not_signed_in}}
     {{> signin}}
   {{else}}
-    <div id="bingo-board-container">
     {{#if winner}}
       {{winner.username}} has won!
-      New Game?
-    {{else}}
-      {{> board}}
-    {{/if}}
+      Refresh for a new game.
+		{{/if}}
+    <div id="bingo-board-container">
+    {{> board}}
     </div>
   {{/if}}
 
   {{> scoreboard}}
+  {{> chat}}
 </template>
 <template name="scoreboard">
   <div id="scoreboard-container">
@@ -32,13 +32,28 @@
     </ul>
   </div>
 </template>
+<template name="chat">
+  <div id="scoreboard-container">
+    <h2>Chat:</h2>
+    <ul>
+    {{#each messages}}
+    <li><b>{{this.user}}</b>: {{this.msg}}</li>
+    {{/each}}
+    </ul>
+    <form action='#'>
+      <input type='text' id='chat_message' />
+      <input type='submit' value='>' id='chat_message_submit'/>
+    </form>
+  </div>
+</template>
 <template name="winner">
 </template>
 <template name="signin">
   <div id="signin-container">
     <form id="signin_form">
-      Sign In:
+      Your Name:
       <input id="signin_username" type="text" />
+      <input id="signin_button" type="submit" value="Achieve Compilers Nirvana" />
     </form>
   </div>
 </template>

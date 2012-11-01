@@ -4,9 +4,10 @@ var BOARD_ROWS = 5,
 var Players = new Meteor.Collection("players");
 var Squares = new Meteor.Collection("squares");
 var Games = new Meteor.Collection("games");
+var Chats = new Meteor.Collection("chats");
 
 if (Meteor.isClient) {
-  Template.homepage.signed_in = function () {
+  Template.homepage.not_signed_in = function () {
     return !Session.get("username");
   };
 
@@ -15,9 +16,9 @@ if (Meteor.isClient) {
   };
 
   Template.signin.events({
-    'blur #signin_username': function(e) {
+    'blur #signin_username, click #signin_button': function(e) {
       var current_game = Games.findOne({ active: true })
-      var username = e.target.value;
+      var username = $(e.target).siblings('#signin_username').val();
       var userid = Players.insert({
         username: username,
         acquired_squares: [],
@@ -33,6 +34,7 @@ if (Meteor.isClient) {
       if (Session.get('board') === undefined) {
         Session.set('board', shuffle(Squares.find({}).fetch()).slice(0,25));
       }
+      return false;
     },
   });
 
@@ -44,6 +46,22 @@ if (Meteor.isClient) {
       return p;
     });
   };
+
+  Template.chat.messages = function() {
+    var messages = Chats.find({}, { sort: { timestamp: 1 }}).fetch();
+    return messages.slice(messages.length - 10, messages.length);
+  };
+
+  Template.chat.events({
+    'click #chat_message_submit': function(e) {
+      var $message_holder = $(e.target).siblings('#chat_message');
+      message_contents = $message_holder.val();
+      $message_holder.val('');
+      if (message_contents.length == 0) { return; }
+      Chats.insert({ msg: message_contents, timestamp: new Date(), user: Session.get('username') });
+      return false;
+    },
+  });
 
   Template.board.rows = function() {
     var s = Session.get('board');
@@ -89,7 +107,9 @@ if (Meteor.isClient) {
       });
       // Check for Bingo, update player accordingly.
       if (has_bingo(acquisitions, FREE_SPACE_INDEX)) {
-        Players.update({ _id: Session.get("userid") }, {$set: {victory: true}})
+        Players.update({ _id: Session.get("userid") }, {$set: {victory: true}});
+				Games.update({_id: Session.get("gameid") }, {$set: {active: false}});
+    		Games.insert({ started: new Date(), active: true })
       }
     },
   });
@@ -99,7 +119,6 @@ if (Meteor.isServer) {
   Meteor.startup(function () {
     var board = [
       { text: "Curly Brackets", },
-      { text: "Abstraction", },
       { text: "Convert to Java", },
       { text: "How Compilers Work", },
       { text: "Boo-lee-an", },
@@ -110,7 +129,9 @@ if (Meteor.isServer) {
       { text: "Rockwell Automation",  },
       { text: "NASA", },
       { text: "Navy/Submarine", },
-      { text: "Space Shuttle",  },
+      { text: "Space",  },
+      { text: "Student falls asleep",  },
+      { text: "All four boards have code on them",  },
       { text: "In C...", },
       { text: "PIC Architecture", },
       { text: "Memory Register", },
@@ -130,6 +151,9 @@ if (Meteor.isServer) {
       { text: "Running out of time" },
       { text: "Fills board with unreadable handwriting" },
       { text: "Student calls out a mistake" },
+      { text: "Gives subtle hints for the test" },
+      { text: "Fails at his own homework" },
+      { text: "I heard you like compilers so I put a compiler in your compuler so you can sompile while you compile!" },
     ];
     Squares.remove({});
     for (i in board) {
