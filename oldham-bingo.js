@@ -151,6 +151,9 @@ if (Meteor.isServer) {
       { text: "Running out of time" },
       { text: "Fills board with unreadable handwriting" },
       { text: "Student calls out a mistake" },
+      { text: "Gives subtle hints for the test" },
+      { text: "Fails at his own homework" },
+      { text: "I heard you like compilers so I put a compiler in your compuler so you can sompile while you compile!" },
     ];
     Squares.remove({});
     for (i in board) {
