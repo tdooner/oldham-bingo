@@ -41,6 +41,9 @@ if (Meteor.isClient) {
   Template.signin.events({
     'blur #signin_username, click #signin_button': function(e) {
       var username = $(e.target).siblings('#signin_username').val();
+      if (username.length === 0) {
+        return false;
+      }
       Session.set("username", username);
       joinCurrentGame(username);
       return false;
@@ -62,7 +65,7 @@ if (Meteor.isClient) {
 
   Template.chat.messages = function() {
     var messages = Chats.find({}, { sort: { timestamp: 1 }}).fetch();
-    return messages.slice(messages.length - 10, messages.length);
+    return messages.slice(messages.length - 10, messages.length).reverse();
   };
 
   Template.chat.events({
@@ -145,8 +148,7 @@ if (Meteor.isServer) {
   Meteor.startup(function () {
     var board = [
       { text: "Curly Brackets", },
-      { text: "Convert to Java", },
-      { text: "How Compilers Work", },
+      { text: "Java", },
       { text: "Boo-lee-an", },
       { text: "Girlfriend", },
       { text: "Talking about old technology", },
@@ -155,7 +157,7 @@ if (Meteor.isServer) {
       { text: "Rockwell Automation",  },
       { text: "NASA", },
       { text: "Navy/Submarine", },
-      { text: "Space",  },
+      { text: "SPACE!!",  },
       { text: "Student falls asleep",  },
       { text: "All four boards have code on them",  },
       { text: "In C...", },
@@ -177,11 +179,7 @@ if (Meteor.isServer) {
       { text: "Running out of time" },
       { text: "Fills board with unreadable handwriting" },
       { text: "Student calls out a mistake" },
-      { text: "Gives subtle hints for the test" },
-      { text: "Fails at his own homework" },
-      { text: "I heard you like compilers so I put a compiler in your compiler so you can sompile while you compile!" },
-      { text: "Emacs" },
-      { text: "Carriage return line feed" }
+      { text: "Fails at his own problems." },
     ];
     Squares.remove({});
     for (i in board) {
@@ -201,11 +199,11 @@ shuffle = function(o){ //v1.0
 
 bingo_count = function(acquired, free_space_index) {
   // Acquired is a flattened array of [ true, true, false, ..., false ]
-  acquired[free_space_index] = true; 
-	long_bingo = 0;
+  acquired[free_space_index] = true;
+  long_bingo = 0;
   // Up-down bingo
   for (var i = 0; i < BOARD_COLS; i++) { // column
-		inner_long_bingo=0;
+    inner_long_bingo=0;
     for (var j = 0; j < BOARD_ROWS; j++) { // row
       if (acquired[i + BOARD_COLS * j]) {
         inner_long_bingo += 1;
@@ -218,7 +216,7 @@ bingo_count = function(acquired, free_space_index) {
 
   // Left-right bingo
   for (var i = 0; i < BOARD_ROWS; i++) { // row
-		inner_long_bingo=0;
+    inner_long_bingo=0;
     for (var j = 0; j < BOARD_COLS; j++) { // col
       if (acquired[i * BOARD_COLS + j]) {
         inner_long_bingo += 1;
@@ -231,7 +229,7 @@ bingo_count = function(acquired, free_space_index) {
 
   // Diagonal Bingo
   // TopLeft-BottomRight
-	inner_long_bingo=0;
+  inner_long_bingo=0;
   for (var i = 0; i < (BOARD_ROWS * BOARD_COLS); i += (BOARD_COLS + 1)) {
     if(acquired[i]) {
       inner_long_bingo += 1;
@@ -241,7 +239,7 @@ bingo_count = function(acquired, free_space_index) {
     long_bingo = inner_long_bingo;
   }
   // TopRight-BottomLeft
-	inner_long_bingo=0;
+  inner_long_bingo=0;
   for (var i = (BOARD_ROWS - 1); i < (1 + BOARD_COLS * (BOARD_ROWS - 1)); i += (BOARD_COLS - 1)) {
     if(acquired[i]) {
       inner_long_bingo += 1;

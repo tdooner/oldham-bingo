@@ -6,8 +6,8 @@
   {{> homepage }}
 </body>
 <template name="homepage">
+  <h1>Let's Play Some Bingo!</h1>
   {{#if not_signed_in}}
-    <h1>Play Bingo!</h1>
     {{> signin}}
   {{else}}
     <div id="bingo-board-container">
@@ -18,8 +18,8 @@
         {{winner.username}} has won!
         <div id="new-game-button">Play Again?</div>
       {{/if}}
-      {{> scoreboard}}
       {{> chat}}
+      {{> scoreboard}}
     </div>
   {{/if}}
 </template>
@@ -28,7 +28,7 @@
     <h2>Current Players:</h2>
     <ul>
       {{#each players}}
-      <li>{{this.username}}<span class="num_squares">{{this.num_squares}} ({{this.num_bingo}})</span></li>
+      <li>{{this.username}}<span class="num_squares">{{this.num_squares}} ({{this.num_bingo}} needed)</span></li>
       {{/each}}
     </ul>
   </div>
@@ -36,15 +36,15 @@
 <template name="chat">
   <div id="scoreboard-container">
     <h2>Chat:</h2>
+    <form action='#'>
+      <input type='text' id='chat_message' />
+      <input type='submit' value='>' id='chat_message_submit'/>
+    </form>
     <ul>
     {{#each messages}}
     <li><b>{{this.user}}</b>: {{this.msg}}</li>
     {{/each}}
     </ul>
-    <form action='#'>
-      <input type='text' id='chat_message' />
-      <input type='submit' value='>' id='chat_message_submit'/>
-    </form>
   </div>
 </template>
 <template name="winner">
