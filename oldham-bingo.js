@@ -179,7 +179,9 @@ if (Meteor.isServer) {
       { text: "Student calls out a mistake" },
       { text: "Gives subtle hints for the test" },
       { text: "Fails at his own homework" },
-      { text: "I heard you like compilers so I put a compiler in your compuler so you can sompile while you compile!" },
+      { text: "I heard you like compilers so I put a compiler in your compiler so you can sompile while you compile!" },
+      { text: "Emacs" },
+      { text: "Carriage return line feed" }
     ];
     Squares.remove({});
     for (i in board) {
