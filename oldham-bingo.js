@@ -6,7 +6,7 @@ var Squares = new Meteor.Collection("squares");
 var Games = new Meteor.Collection("games");
 
 if (Meteor.isClient) {
-  Template.homepage.signed_in = function () {
+  Template.homepage.not_signed_in = function () {
     return !Session.get("username");
   };
 
@@ -89,7 +89,9 @@ if (Meteor.isClient) {
       });
       // Check for Bingo, update player accordingly.
       if (has_bingo(acquisitions, FREE_SPACE_INDEX)) {
-        Players.update({ _id: Session.get("userid") }, {$set: {victory: true}})
+        Players.update({ _id: Session.get("userid") }, {$set: {victory: true}});
+				Games.update({_id: Session.get("gameid") }, {$set: {active: false}});
+    		Games.insert({ started: new Date(), active: true })
       }
     },
   });
@@ -99,7 +101,6 @@ if (Meteor.isServer) {
   Meteor.startup(function () {
     var board = [
       { text: "Curly Brackets", },
-      { text: "Abstraction", },
       { text: "Convert to Java", },
       { text: "How Compilers Work", },
       { text: "Boo-lee-an", },
