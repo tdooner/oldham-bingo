@@ -41,6 +41,9 @@ if (Meteor.isClient) {
   Template.signin.events({
     'blur #signin_username, click #signin_button': function(e) {
       var username = $(e.target).siblings('#signin_username').val();
+      if (username.length === 0) {
+        return false;
+      }
       Session.set("username", username);
       joinCurrentGame(username);
       return false;
