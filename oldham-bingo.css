@@ -15,6 +15,9 @@ h1 {
   height: 80%;
   float: left;
 }
+#signin_form {
+  padding: 100px;
+}
 #bingo-board {
   text-align: center;
   width: 100%;

@@ -15,7 +15,7 @@ if (Meteor.isClient) {
   };
 
   Template.signin.events({
-    'blur #signin_username': function(e) {
+    'blur #signin_username, click #signin_button': function(e) {
       var current_game = Games.findOne({ active: true })
       var username = e.target.value;
       var userid = Players.insert({
