@@ -41,6 +41,10 @@ if (Meteor.isClient) {
       'game_id': Session.get("gameid"),
     }).map(function(p) {
       p.num_squares = p.acquired_squares.length;
+      var acquisitions = Session.get('board').map(function(e) {
+        return (p.acquired_squares.indexOf(e._id) != -1);
+      });
+      p.num_bingo = 5-bingo_count(acquisitions, FREE_SPACE_INDEX);
       return p;
     });
   };
@@ -88,7 +92,7 @@ if (Meteor.isClient) {
         return (acquired_squares.indexOf(e._id) != -1);
       });
       // Check for Bingo, update player accordingly.
-      if (has_bingo(acquisitions, FREE_SPACE_INDEX)) {
+      if (bingo_count(acquisitions, FREE_SPACE_INDEX)===5) {
         Players.update({ _id: Session.get("userid") }, {$set: {victory: true}});
 				Games.update({_id: Session.get("gameid") }, {$set: {active: false}});
     		Games.insert({ started: new Date(), active: true })
@@ -148,48 +152,56 @@ shuffle = function(o){ //v1.0
     return o;
 };
 
-has_bingo = function(acquired, free_space_index) {
+bingo_count = function(acquired, free_space_index) {
   // Acquired is a flattened array of [ true, true, false, ..., false ]
-  acquired[free_space_index] = true;
-
+  acquired[free_space_index] = true; 
+	long_bingo = 0;
   // Up-down bingo
   for (var i = 0; i < BOARD_COLS; i++) { // column
-    var has_bingo = true;
+		inner_long_bingo=0;
     for (var j = 0; j < BOARD_ROWS; j++) { // row
-      has_bingo = has_bingo && acquired[i + BOARD_COLS * j];
+      if (acquired[i + BOARD_COLS * j]) {
+        inner_long_bingo += 1;
+      }
     }
-    if (has_bingo) {
-      return true;
+    if (inner_long_bingo > long_bingo) {
+      long_bingo = inner_long_bingo;
     }
   }
 
   // Left-right bingo
   for (var i = 0; i < BOARD_ROWS; i++) { // row
-    var has_bingo = true;
+		inner_long_bingo=0;
     for (var j = 0; j < BOARD_COLS; j++) { // col
-      has_bingo = has_bingo && acquired[i * BOARD_COLS + j];
+      if (acquired[i * BOARD_COLS + j]) {
+        inner_long_bingo += 1;
+      }
     }
-    if (has_bingo) {
-      return true;
+    if (inner_long_bingo > long_bingo) {
+      long_bingo = inner_long_bingo;
     }
   }
 
   // Diagonal Bingo
   // TopLeft-BottomRight
-  var has_bingo = true;
+	inner_long_bingo=0;
   for (var i = 0; i < (BOARD_ROWS * BOARD_COLS); i += (BOARD_COLS + 1)) {
-    has_bingo = has_bingo && acquired[i];
+    if(acquired[i]) {
+      inner_long_bingo += 1;
+    }
   }
-  if (has_bingo) {
-    return true;
+  if (inner_long_bingo > long_bingo) {
+    long_bingo = inner_long_bingo;
   }
   // TopRight-BottomLeft
-  var has_bingo = true;
+	inner_long_bingo=0;
   for (var i = (BOARD_ROWS - 1); i < (1 + BOARD_COLS * (BOARD_ROWS - 1)); i += (BOARD_COLS - 1)) {
-    has_bingo = has_bingo && acquired[i];
+    if(acquired[i]) {
+      inner_long_bingo += 1;
+    }
   }
-  if (has_bingo) {
-    return true;
+  if (inner_long_bingo > long_bingo) {
+    long_bingo = inner_long_bingo;
   }
-  return false;
+  return long_bingo;
 }
