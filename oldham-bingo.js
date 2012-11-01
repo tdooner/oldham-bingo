@@ -129,8 +129,8 @@ if (Meteor.isClient) {
       // Check for Bingo, update player accordingly.
       if (bingo_count(acquisitions, FREE_SPACE_INDEX)===5) {
         Players.update({ _id: Session.get("userid") }, {$set: {victory: true}});
-				Games.update({_id: Session.get("gameid") }, {$set: {active: false}});
-    		Games.insert({ started: new Date(), active: true })
+        Games.update({_id: Session.get("gameid") }, {$set: {active: false}});
+        Games.insert({ started: new Date(), active: true })
       }
     },
   });
@@ -192,10 +192,10 @@ shuffle = function(o){ //v1.0
 bingo_count = function(acquired, free_space_index) {
   // Acquired is a flattened array of [ true, true, false, ..., false ]
   acquired[free_space_index] = true; 
-	long_bingo = 0;
+  long_bingo = 0;
   // Up-down bingo
   for (var i = 0; i < BOARD_COLS; i++) { // column
-		inner_long_bingo=0;
+    inner_long_bingo=0;
     for (var j = 0; j < BOARD_ROWS; j++) { // row
       if (acquired[i + BOARD_COLS * j]) {
         inner_long_bingo += 1;
@@ -208,7 +208,7 @@ bingo_count = function(acquired, free_space_index) {
 
   // Left-right bingo
   for (var i = 0; i < BOARD_ROWS; i++) { // row
-		inner_long_bingo=0;
+    inner_long_bingo=0;
     for (var j = 0; j < BOARD_COLS; j++) { // col
       if (acquired[i * BOARD_COLS + j]) {
         inner_long_bingo += 1;
@@ -221,7 +221,7 @@ bingo_count = function(acquired, free_space_index) {
 
   // Diagonal Bingo
   // TopLeft-BottomRight
-	inner_long_bingo=0;
+  inner_long_bingo=0;
   for (var i = 0; i < (BOARD_ROWS * BOARD_COLS); i += (BOARD_COLS + 1)) {
     if(acquired[i]) {
       inner_long_bingo += 1;
@@ -231,7 +231,7 @@ bingo_count = function(acquired, free_space_index) {
     long_bingo = inner_long_bingo;
   }
   // TopRight-BottomLeft
-	inner_long_bingo=0;
+  inner_long_bingo=0;
   for (var i = (BOARD_ROWS - 1); i < (1 + BOARD_COLS * (BOARD_ROWS - 1)); i += (BOARD_COLS - 1)) {
     if(acquired[i]) {
       inner_long_bingo += 1;
