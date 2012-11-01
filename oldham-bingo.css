@@ -55,6 +55,7 @@ h1 {
 }
 #scoreboard-container li {
   padding: 1px;
+  clear: both;
 }
 #scoreboard-container.the_user li {
   background-color: #efefef;
