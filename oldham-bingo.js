@@ -7,6 +7,23 @@ var Games = new Meteor.Collection("games");
 var Chats = new Meteor.Collection("chats");
 
 if (Meteor.isClient) {
+
+  var joinCurrentGame = function(username) {
+    var current_game = Games.findOne({ active: true });
+    var userid = Players.insert({
+      username: username,
+      acquired_squares: [],
+      victory: false,
+      game_id: current_game._id,
+    });
+    Session.set("userid", userid);
+    Session.set("gameid", current_game._id);
+
+    // Collect 24 random squares and mix them up. Store them in session for
+    // now.
+    Session.set('board', shuffle(Squares.find({}).fetch()).slice(0,25));
+  };
+
   Template.homepage.not_signed_in = function () {
     return !Session.get("username");
   };
@@ -15,25 +32,17 @@ if (Meteor.isClient) {
     return Players.findOne({ game_id: Session.get("gameid"), victory: true });
   };
 
+  Template.homepage.events({
+    'click #new-game-button': function(e) {
+      joinCurrentGame(Session.get('username'));
+    },
+  });
+
   Template.signin.events({
     'blur #signin_username, click #signin_button': function(e) {
-      var current_game = Games.findOne({ active: true })
       var username = $(e.target).siblings('#signin_username').val();
-      var userid = Players.insert({
-        username: username,
-        acquired_squares: [],
-        victory: false,
-        game_id: current_game._id,
-      });
       Session.set("username", username);
-      Session.set("userid", userid);
-      Session.set("gameid", current_game._id);
-
-      // Collect 24 random squares and mix them up. Store them in session for
-      // now.
-      if (Session.get('board') === undefined) {
-        Session.set('board', shuffle(Squares.find({}).fetch()).slice(0,25));
-      }
+      joinCurrentGame(username);
       return false;
     },
   });
@@ -70,7 +79,11 @@ if (Meteor.isClient) {
   Template.board.rows = function() {
     var s = Session.get('board');
     var board = [];
-    var acquired_squares = Players.findOne({ _id: Session.get("userid") }).acquired_squares;
+    var player = Players.findOne({ _id: Session.get("userid") });
+    if (player === undefined) {
+      return board;
+    }
+    var acquired_squares = player.acquired_squares;
     for (var i = 0; i < BOARD_ROWS; i++) {
       var this_row = [];
       for (var j = 0; j < BOARD_COLS; j++) {
@@ -91,7 +104,8 @@ if (Meteor.isClient) {
 
   Template.board.events({
     'click td' : function(e) {
-      if (Games.findOne({ _id: Session.get('gameid') }).active === false) {
+      var game;
+      if ((game = Games.findOne({ _id: Session.get('gameid') })) && game.active === false) {
         return;
       }
       var square_id = e.target.id;

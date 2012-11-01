@@ -35,13 +35,18 @@ h1 {
   background-color: #ccc;
 }
 #new-game-button {
-  line-height: 24px;
+  line-height: 54px;
   background-color: #efefef;
+  text-align: center;
+}
+#new-game-button:hover {
+  background-color: #ccc;
+  cursor: pointer;
 }
 #right-column {
+  margin: 20px 5% 0 0;
   float: right;
   width: 20%;
-  margin-right: 5%;
   overflow: hidden;
 }
 #scoreboard-container ul {
