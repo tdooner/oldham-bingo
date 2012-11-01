@@ -34,10 +34,15 @@ h1 {
 #bingo-board td.acquired {
   background-color: #ccc;
 }
-#scoreboard-container {
-  float: left;
-  width: 15%;
-  margin-left: 20px;
+#new-game-button {
+  line-height: 24px;
+  background-color: #efefef;
+}
+#right-column {
+  float: right;
+  width: 20%;
+  margin-right: 5%;
+  overflow: hidden;
 }
 #scoreboard-container ul {
   padding: 0;

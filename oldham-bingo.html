@@ -3,24 +3,25 @@
 </head>
 
 <body>
-  <h1>Play Bingo!</h1>
   {{> homepage }}
 </body>
 <template name="homepage">
   {{#if not_signed_in}}
+    <h1>Play Bingo!</h1>
     {{> signin}}
   {{else}}
-    {{#if winner}}
-      {{winner.username}} has won!
-      Refresh for a new game.
-		{{/if}}
     <div id="bingo-board-container">
     {{> board}}
     </div>
+    <div id="right-column">
+      {{#if winner}}
+        {{winner.username}} has won!
+        <div id="new-game-button">Play Again?</div>
+      {{/if}}
+      {{> scoreboard}}
+      {{> chat}}
+    </div>
   {{/if}}
-
-  {{> scoreboard}}
-  {{> chat}}
 </template>
 <template name="scoreboard">
   <div id="scoreboard-container">

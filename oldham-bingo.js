@@ -87,6 +87,9 @@ if (Meteor.isClient) {
 
   Template.board.events({
     'click td' : function(e) {
+      if (Games.findOne({ _id: Session.get('gameid') }).active === false) {
+        return;
+      }
       var square_id = e.target.id;
       var acquired_squares = Players.find({ _id: Session.get("userid") }).fetch()[0].acquired_squares;
       // todo: verify that the square is not already acquired
