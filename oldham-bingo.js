@@ -131,7 +131,11 @@ if (Meteor.isClient) {
         Players.update({ _id: Session.get("userid") }, {$set: {victory: true}});
 				Games.update({_id: Session.get("gameid") }, {$set: {active: false}});
     		Games.insert({ started: new Date(), active: true });
-        (new Audio('bingo.mp3')).play();
+        if ((new Audio()).canPlayType("audio/ogg")) {
+          (new Audio('bingo.ogg')).play();
+        } else {
+          (new Audio('bingo.mp3')).play();
+        }
       }
     },
   });
