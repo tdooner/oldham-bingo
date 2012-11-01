@@ -140,8 +140,7 @@ if (Meteor.isServer) {
   Meteor.startup(function () {
     var board = [
       { text: "Curly Brackets", },
-      { text: "Convert to Java", },
-      { text: "How Compilers Work", },
+      { text: "Java", },
       { text: "Boo-lee-an", },
       { text: "Girlfriend", },
       { text: "Talking about old technology", },
@@ -150,7 +149,7 @@ if (Meteor.isServer) {
       { text: "Rockwell Automation",  },
       { text: "NASA", },
       { text: "Navy/Submarine", },
-      { text: "Space",  },
+      { text: "SPACE!!",  },
       { text: "Student falls asleep",  },
       { text: "All four boards have code on them",  },
       { text: "In C...", },
@@ -172,9 +171,7 @@ if (Meteor.isServer) {
       { text: "Running out of time" },
       { text: "Fills board with unreadable handwriting" },
       { text: "Student calls out a mistake" },
-      { text: "Gives subtle hints for the test" },
-      { text: "Fails at his own homework" },
-      { text: "I heard you like compilers so I put a compiler in your compuler so you can sompile while you compile!" },
+      { text: "Fails at his own problems." },
     ];
     Squares.remove({});
     for (i in board) {
