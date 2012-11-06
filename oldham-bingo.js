@@ -154,9 +154,9 @@ if (Meteor.isServer) {
       { text: "Talking about old technology", },
       { text: "Impressed by newfangled technology", },
       { text: "32-bit", },
-      { text: "Rockwell Automation",  },
+      { text: "Rockwell Automation / PLC5",  },
       { text: "NASA", },
-      { text: "Navy/Submarine", },
+      { text: "Navy / Submarine / Military", },
       { text: "SPACE!!",  },
       { text: "Student falls asleep",  },
       { text: "All four boards have code on them",  },
@@ -186,6 +186,10 @@ if (Meteor.isServer) {
       { text: "Not that realistic real-world tie-in to what he's teaching" },
       { text: "Talks about code he has written in the distant past" },
       { text: "Global Variables" },
+      { text: "Mentions something that would be quite bad without mentioning how/why it is bad" },
+      { text: "'You guys'" },
+      { text: "Cameron knows more about computers/C than Oldham" },
+      { text: "So what does this look like...?" },
     ];
     Squares.remove({});
     for (i in board) {
