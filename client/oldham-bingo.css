@@ -47,20 +47,35 @@ h1 {
   margin: 20px 5% 0 0;
   float: right;
   width: 20%;
-  overflow: hidden;
+  height: 80%;
 }
-#scoreboard-container ul {
+.scoreboard-container ul {
   padding: 0;
   list-style: none;
 }
-#scoreboard-container li {
+.scoreboard-container li {
   padding: 1px;
   clear: both;
 }
-#scoreboard-container.the_user li {
+.scoreboard-container.the_user li {
   background-color: #efefef;
 }
-#scoreboard-container .num_squares {
+.scoreboard-container .num_squares {
   display: block;
   float: right;
+}
+#chat_container {
+  height: 65%;
+  padding-bottom: 5px;
+}
+#chat_list {
+ height: 80%;
+ overflow-y: scroll;
+ overflow-x: hidden;
+}
+#chat_form {
+  height: 20%;
+}
+#player_container {
+  height: 35%;
 }

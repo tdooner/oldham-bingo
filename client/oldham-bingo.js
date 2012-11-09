@@ -55,7 +55,7 @@ Template.scoreboard.players = function() {
 
 Template.chat.messages = function() {
   var messages = Chats.find({}, { sort: { timestamp: 1 }}).fetch();
-  return messages.slice(messages.length - 10, messages.length).reverse();
+  return messages.reverse();
 };
 
 Template.chat.events({

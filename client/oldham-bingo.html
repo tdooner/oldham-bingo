@@ -24,7 +24,7 @@
   {{/if}}
 </template>
 <template name="scoreboard">
-  <div id="scoreboard-container">
+  <div class="scoreboard-container" id="player_container">
     <h2>Current Players:</h2>
     <ul>
       {{#each players}}
@@ -34,17 +34,21 @@
   </div>
 </template>
 <template name="chat">
-  <div id="scoreboard-container">
-    <h2>Chat:</h2>
-    <form action='#'>
-      <input type='text' id='chat_message' />
-      <input type='submit' value='>' id='chat_message_submit'/>
-    </form>
+  <div class="scoreboard-container" id="chat_container">
+    <div id="chat_form">
+      <h2>Chat:</h2>
+      <form action='#'>
+        <input type='text' id='chat_message' />
+        <input type='submit' value='>' id='chat_message_submit'/>
+      </form>
+    </div>
+    <div id="chat_list">
     <ul>
-    {{#each messages}}
-    <li><b>{{this.user}}</b>: {{this.msg}}</li>
-    {{/each}}
+      {{#each messages}}
+        <li><b>{{this.user}}</b>: {{this.msg}}</li>
+      {{/each}}
     </ul>
+  </div>
   </div>
 </template>
 <template name="winner">
