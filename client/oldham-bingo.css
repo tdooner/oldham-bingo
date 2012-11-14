@@ -8,13 +8,6 @@ h1 {
   text-align: center;
   margin-bottom: 0;
 }
-#bingo-board-container, #signin-container {
-  border: 5px solid #000;
-  margin: 10px 10px 0 10px;
-  width: 70%;
-  height: 80%;
-  float: left;
-}
 #signin_form {
   padding: 100px;
 }
@@ -44,23 +37,35 @@ h1 {
   cursor: pointer;
 }
 #right-column {
-  margin: 20px 5% 0 0;
+  margin: 10px 2% 0 0;
   float: right;
-  width: 20%;
-  height: 80%;
+  width: 28%;
+  height: 90%;
 }
-.scoreboard-container ul {
+#left-column {
+  margin: 10px 2% 0 2%;
+  width: 66%;
+  height: 90%;
+  float: left;
+}
+#bingo-board-container, #signin-container {
+  margin-top: 5px;
+  border: 5px solid #000;
+  height: 90%;
+  width: 100%;
+ }
+.right-container ul {
   padding: 0;
   list-style: none;
 }
-.scoreboard-container li {
+.right-container li {
   padding: 1px;
   clear: both;
 }
-.scoreboard-container.the_user li {
+.right-container.the_user li {
   background-color: #efefef;
 }
-.scoreboard-container .num_squares {
+.right-container .num_squares {
   display: block;
   float: right;
 }
@@ -69,12 +74,12 @@ h1 {
   padding-bottom: 5px;
 }
 #chat_list {
- height: 80%;
+ height: 75%;
  overflow-y: scroll;
  overflow-x: hidden;
 }
 #chat_form {
-  height: 20%;
+  overflow: hidden;
 }
 #player_container {
   height: 35%;
