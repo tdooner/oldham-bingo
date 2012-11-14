@@ -54,7 +54,10 @@ Template.scoreboard.players = function() {
 };
 
 Template.chat.messages = function() {
-  var messages = Chats.find({}, { sort: { timestamp: 1 }}).fetch();
+  var messages = Chats.find({}, { sort: { timestamp: 1 }}).map(function(c) {
+    c.time = new Date(Date.parse(c.timestamp))
+    return c;
+  });
   return messages.reverse();
 };
 

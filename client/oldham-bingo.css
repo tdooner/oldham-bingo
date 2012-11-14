@@ -70,17 +70,12 @@ h1 {
   float: right;
 }
 #chat_container {
-  height: 65%;
+  height: 75%;
   padding-bottom: 5px;
 }
 #chat_list {
- height: 75%;
- overflow-y: scroll;
- overflow-x: hidden;
-}
-#chat_form {
-  overflow: hidden;
-}
-#player_container {
-  height: 35%;
+  height: 80%;
+  margin-top: 5px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }

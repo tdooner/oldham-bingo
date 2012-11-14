@@ -47,7 +47,7 @@
     <div id="chat_list">
       <ul>
         {{#each messages}}
-          <li><b>{{this.user}}</b>: {{this.msg}}</li>
+        <li><span title="{{this.time}}"><b>{{this.user}}</b>: {{this.msg}}</span></li>
         {{/each}}
       </ul>
     </div>
