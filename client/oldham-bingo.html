@@ -6,13 +6,7 @@
 </body>
 <template name="homepage">
     <div id="left-column">
-	    <h1>Let's Play Some Bingo!</h1>
-	    <br />
-	    <h3>	<center>
-		    <a href = "https://github.com/yetanothername/oldham-bingo/wiki/Bugs">Bug Reports</a> 
-		    |
-		    <a href = "https://github.com/yetanothername/oldham-bingo/wiki/Ideas">Space Ideas</a></center>
-	    </h3>
+      <h1>Let's Play Some Bingo!</h1>
       {{#if not_signed_in}}
         {{> signin}}
       {{else}}

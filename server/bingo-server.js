@@ -14,7 +14,7 @@ Meteor.startup(function () {
 { text: "32-bit", },
 { text: "Rockwell Automation",  },
 { text: "NASA", },
-{ text: "Navy/Submarine/Military", },
+{ text: "Navy/Submarine", },
 { text: "Student falls asleep",  },
 { text: "All four boards have code on them",  },
 { text: "In C...", },
@@ -44,7 +44,7 @@ Meteor.startup(function () {
 { text: "Student calls out a mistake" },
 { text: "Confused by his own notes" },
 { text: "Link List ALL the data structures!" },
-{ text: "Quads" }
+{ text: "Quads" },
 { text: "Student walks in more than thirty minutes late." },
 { text: "Student walks in, turns in homework, and leaves." },
       	];
