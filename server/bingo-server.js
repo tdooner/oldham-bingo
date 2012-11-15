@@ -35,7 +35,7 @@ Meteor.startup(function () {
 { text: "Memory Management" },
 { text: "No one in class is paying attention" },
 { text: "Reading code without explaining it" },
-{ text: "Blackboard full of PIC assembly" }
+{ text: "Blackboard full of PIC assembly" },
 { text: "This is how you do the homework" },
 { text: "Extra Credit" },
 { text: "When I was an undergrad..." },
@@ -44,10 +44,10 @@ Meteor.startup(function () {
 { text: "Student calls out a mistake" },
 { text: "Confused by his own notes" },
 { text: "Link List ALL the data structures!" },
-{ text: "Quads" },
-{ text: "Says code more than three times in a sentence" },
-{
-  ];
+{ text: "Quads" }
+{ text: "Student walks in more than thirty minutes late." },
+{ text: "Student walks in, turns in homework, and leaves." },
+      	];
 Squares.remove({});
 for (i in board) {
   Squares.insert(board[i]);
