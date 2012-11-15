@@ -1,30 +1,32 @@
 <head>
   <title>Oldham Bingo</title>
 </head>
-
 <body>
   {{> homepage }}
 </body>
 <template name="homepage">
-  <h1>Let's Play Some Bingo!</h1>
-  {{#if not_signed_in}}
-    {{> signin}}
-  {{else}}
-    <div id="bingo-board-container">
-    {{> board}}
-    </div>
-    <div id="right-column">
-      {{#if winner}}
-        {{winner.username}} has won!
-        <div id="new-game-button">Play Again?</div>
+    <div id="left-column">
+      <h1>Let's Play Some Bingo!</h1>
+      {{#if not_signed_in}}
+        {{> signin}}
+      {{else}}
+        {{> board}}
       {{/if}}
-      {{> chat}}
-      {{> scoreboard}}
     </div>
-  {{/if}}
+    {{#if not_signed_in}}
+    {{else}}
+      <div id="right-column">
+        {{#if winner}}
+          {{winner.username}} has won!
+          <div id="new-game-button">Play Again?</div>
+        {{/if}}
+        {{> chat}}
+        {{> scoreboard}}
+      </div>
+    {{/if}}
 </template>
 <template name="scoreboard">
-  <div id="scoreboard-container">
+  <div class="right-container" id="player_container">
     <h2>Current Players:</h2>
     <ul>
       {{#each players}}
@@ -34,17 +36,21 @@
   </div>
 </template>
 <template name="chat">
-  <div id="scoreboard-container">
+  <div class="right-container" id="chat_container">
     <h2>Chat:</h2>
-    <form action='#'>
-      <input type='text' id='chat_message' />
-      <input type='submit' value='>' id='chat_message_submit'/>
-    </form>
-    <ul>
-    {{#each messages}}
-    <li><b>{{this.user}}</b>: {{this.msg}}</li>
-    {{/each}}
-    </ul>
+    <div id="chat_form">
+      <form action='#'>
+        <input type='text' id='chat_message' />
+        <input type='submit' value='>' id='chat_message_submit'/>
+      </form>
+    </div>
+    <div id="chat_list">
+      <ul>
+        {{#each messages}}
+        <li><span title="{{this.time}}"><b>{{this.user}}</b>: {{this.msg}}</span></li>
+        {{/each}}
+      </ul>
+    </div>
   </div>
 </template>
 <template name="winner">
@@ -59,6 +65,7 @@
   </div>
 </template>
 <template name="board">
+      <div id="bingo-board-container">
   <table id="bingo-board">
     <tbody>
       {{#each rows}}
@@ -70,4 +77,5 @@
       {{/each}}
     </tbody>
   </table>
+</div>
 </template>
