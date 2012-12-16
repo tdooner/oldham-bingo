@@ -56,7 +56,10 @@ Meteor.startup ->
     a['text'] = "#{a.letter}#{n}"
     a['board'] = "standard"
     a
-  boards = [oldham_board, standard_board]
+  vincenzo_board = [1..25].map ->
+    {text: "Any Questions? .................................",
+    board: "vincenzo"}
+  boards = [oldham_board, standard_board, vincenzo_board]
   Squares.remove {}
   for board in boards
     for square in board
