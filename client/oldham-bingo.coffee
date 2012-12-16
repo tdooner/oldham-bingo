@@ -1,13 +1,21 @@
 joinCurrentGame = (username, game) ->
-  current_game = Games.findOne(active: true)
+  current_game = Games.findOne(active: true, game: game)
+  unless current_game
+    game_id = Games.insert
+      started: new Date()
+      active: true
+      game: game
+  else
+    game_id = current_game._id
+
   userid = Players.insert(
     username: username
     acquired_squares: []
     victory: false
-    game_id: current_game._id
+    game_id: game_id
   )
   Session.set "userid", userid
-  Session.set "gameid", current_game._id
+  Session.set "gameid", game_id
 
   # Collect 24 random squares and mix them up. Store them in session for
   # now.
@@ -106,7 +114,6 @@ Template.board.rows = ->
   board
 
 Template.board.events "click td": (e) ->
-  game = undefined
   return  if (game = Games.findOne(_id: Session.get("gameid"))) and game.active is false
   square_id = e.target.id
   acquired_squares = Players.find(_id: Session.get("userid")).fetch()[0].acquired_squares
@@ -146,10 +153,6 @@ Template.board.events "click td": (e) ->
     ,
       $set:
         active: false
-
-    Games.insert
-      started: new Date()
-      active: true
 
     if (new Audio()).canPlayType("audio/ogg")
       (new Audio("bingo.ogg")).play()

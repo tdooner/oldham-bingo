@@ -62,6 +62,3 @@ Meteor.startup ->
     for square in board
       Squares.insert square
   Games.remove {}
-  Games.insert
-    started: new Date()
-    active: true
