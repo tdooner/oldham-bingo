@@ -23,6 +23,8 @@ joinCurrentGame = (username, game) ->
     Session.set "board", shuffle(Squares.find({board: "oldham"}).fetch()).slice(0, 25)
   else if Session.get("game") == "vincenzo"
     Session.set "board", shuffle(Squares.find({board: "vincenzo"}).fetch()).slice(0, 25)
+  else if Session.get("game") == "tekin"
+    Session.set "board", shuffle(Squares.find({board: "tekin"}).fetch()).slice(0,25)
   else if Session.get("game") == "standard"
     b = shuffle(Squares.find({letter: "B", board: "standard"}).fetch())[0..4]
     i = shuffle(Squares.find({letter: "I", board: "standard"}).fetch())[0..4]

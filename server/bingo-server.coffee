@@ -6,6 +6,33 @@ Meteor.methods
       user: user
 
 Meteor.startup ->
+  tekin_board = [
+    "derrogatory comments about the class"
+    "comment about sleep"
+    "first 1 minute break"
+    "second 1 minute break"
+    "morbid joke"
+    "technical malfunction"
+    "critical section"
+    "talking about the old country"
+    "name dropping"
+    "self-promotion"
+    "back-handed complement to class"
+    "student walks out during 1 minute break"
+    "someone is sleeping in class"
+    "that was a joke by the way"
+    "long pause while explaining stuff"
+    "depressing joke"
+    "UNIX"
+    "jab at an OS"
+    "compliment to an OS"
+    "calls out specifc person not paying attention"
+    "fishing for answer"
+    "student answers a question correctly"
+    "student has no understanding of the question"
+    "calls out one of his grad students"
+  ].map (s) ->
+    {text: s, board: "tekin"}
   oldham_board = [
     "Curly Brackets"
     "Java"
@@ -59,7 +86,7 @@ Meteor.startup ->
   vincenzo_board = [1..25].map ->
     {text: "Any Questions? .................................",
     board: "vincenzo"}
-  boards = [oldham_board, standard_board, vincenzo_board]
+  boards = [oldham_board, standard_board, vincenzo_board, tekin_board]
   Squares.remove {}
   for board in boards
     for square in board
