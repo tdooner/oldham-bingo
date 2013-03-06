@@ -13,6 +13,7 @@ joinCurrentGame = (username, game) ->
     acquired_squares: []
     victory: false
     game_id: game_id
+    timestamp: Date.now()
   )
   Session.set "userid", userid
   Session.set "gameid", game_id
@@ -37,6 +38,11 @@ joinCurrentGame = (username, game) ->
       board[i] = separated[i%5][Math.floor(i/5)]
     Session.set "board", board
 
+IdlePlayerCheck = ->
+  Players.update({_id: Session.get("userid")}, {$set: {timestamp: Date.now()}})
+
+setInterval(IdlePlayerCheck, 10000)
+
 Template.homepage.not_signed_in = ->
   not Session.get("username")
 
@@ -51,7 +57,10 @@ Template.homepage.events "click #new-game-button": (e) ->
 Template.signin.events "click #signin_button": (e) ->
   username = $("#signin_username").val()
   game = $("#game_select option:selected").val()
-  return false  if username.length is 0
+  if username.length is 0 or username.length > 30
+    alert("Please enter a username between 1 and 30 characters!")
+  return false  if username.length is 0 or username.length > 30
+  
   Session.set "username", username
   Session.set "game", game
   joinCurrentGame username, game
