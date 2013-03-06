@@ -4,7 +4,7 @@ Meteor.methods
       msg: message_contents
       timestamp: new Date()
       user: user
-
+      
 Meteor.startup ->
   tekin_board = [
     "derrogatory comments about the class"
@@ -99,3 +99,8 @@ Meteor.startup ->
     for square in board
       Squares.insert square
   Games.remove {}
+IdlePlayerCheck = ->
+  Players.remove({timestamp: {$lt: Date.now()-300000}}) 
+
+Meteor.setInterval(IdlePlayerCheck, 60000)
+
