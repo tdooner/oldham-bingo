@@ -59,8 +59,8 @@ Template.signin.events "click #signin_button": (e) ->
   game = $("#game_select option:selected").val()
   if username.length is 0 or username.length > 30
     alert("Please enter a username between 1 and 30 characters!")
-  return false  if username.length is 0 or username.length > 30
-  
+    return false
+
   Session.set "username", username
   Session.set "game", game
   joinCurrentGame username, game
