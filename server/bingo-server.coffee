@@ -84,6 +84,24 @@ Meteor.startup ->
     "Student walks in, turns in homework, and leaves."
   ].map (s) ->
     {text: s, board: "oldham"}
+  entemann_board = [
+    "I'm sorry... [contradicts previous incorrect statement]"
+    "There are a number of typos..."
+    "Speak now or..."
+    "Coercive approach to pedagogy"
+    "For all practical purposes..."
+    "[Student walks in late]"
+    "Questions, problems, anything"
+    "Questions, comments, problems"
+    "[Mixes up variables]"
+    "I'm sorry? ... I'm sorry? ... I'm sorry?"
+    "[Tries to answer question. Doesn't answer question]"
+    "[FREE SPACE: general mistake]"
+    "[At least 15 people with their laptops out, probably not taking notes]"
+    "[Goes whole class with no questions, comments, etc]"
+    "...Prolog..."
+  ].map (s) ->
+    {text: s, board: "entemann"}
   standard_board = [1..75].map (n) ->
     a = {}
     a['letter'] = ["B", "I", "N", "G", "O"][Math.floor((n-1)/15)]
@@ -93,7 +111,9 @@ Meteor.startup ->
   vincenzo_board = [1..25].map ->
     {text: "Any Questions? .................................",
     board: "vincenzo"}
-  boards = [oldham_board, standard_board, vincenzo_board, tekin_board]
+  boards = [
+      oldham_board, standard_board, vincenzo_board, tekin_board, entemann_board
+  ]
   Squares.remove {}
   for board in boards
     for square in board
